@@ -28,9 +28,8 @@ var recipeTemplate = (
 );
 
 
-var serverBase = '//localhost:8080/';
-var RECIPES_URL = serverBase + 'recipes';
-var SHOPPING_LIST_URL = serverBase + 'shopping-list';
+var RECIPES_URL = '/recipes';
+var SHOPPING_LIST_URL = '/shopping-list';
 
 
 function getAndDisplayRecipes() {
@@ -58,7 +57,7 @@ function getAndDisplayShoppingList() {
     var itemElements = items.map(function(item) {
       var element = $(shoppingItemTemplate);
       element.attr('id', item.id);
-      var itemName = element.find('.js-shopping-item-name')
+      var itemName = element.find('.js-shopping-item-name');
       itemName.text(item.name);
       element.attr('data-checked', item.checked);
       if (item.checked) {
@@ -189,6 +188,7 @@ function handleShoppingCheckedToggle() {
   $('.js-shopping-list').on('click', '.js-shopping-item-toggle', function(e) {
     e.preventDefault();
     var element = $(e.currentTarget).closest('.js-shopping-item');
+
     var item = {
       id: element.attr('id'),
       checked: !JSON.parse(element.attr('data-checked')),

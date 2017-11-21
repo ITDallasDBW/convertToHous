@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
 // add new item to ShoppingList and return it with a 201.
 router.post('/', jsonParser, (req, res) => {
   // ensure `name` and `budget` are in request body
-  const requiredFields = ['name', 'budget'];
+  const requiredFields = ['name', 'checked'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -53,7 +53,7 @@ router.delete('/:id', (req, res) => {
 // of that, log error and send back status code 400. otherwise
 // call `ShoppingList.update` with updated item.
 router.put('/:id', jsonParser, (req, res) => {
-  const requiredFields = ['name', 'checked', 'id'];
+  const requiredFields = ['name', 'budget', 'id'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -63,16 +63,17 @@ router.put('/:id', jsonParser, (req, res) => {
     }
   }
   if (req.params.id !== req.body.id) {
-    const message = `Request path id (${req.params.id}) and request body id
-      (${req.body.id}) must match`;
+    const message = (
+      `Request path id (${req.params.id}) and request body id `
+      `(${req.body.id}) must match`);
     console.error(message);
     return res.status(400).send(message);
   }
   console.log(`Updating shopping list item \`${req.params.id}\``);
-  ShoppingList.update({
+  const updatedItem = ShoppingList.update({
     id: req.params.id,
     name: req.body.name,
-    checked: req.body.checked
+    budget: req.body.budget
   });
   res.status(204).end();
 })
